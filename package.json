@@ -1,0 +1,45 @@
+{
+  "name": "audio-browser",
+  "version": "1.0.0",
+  "description": "Audio Browser desktop app with Electron packaging",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev:web": "node server.js",
+    "start:electron": "electron .",
+    "pack:win": "electron-builder --win --dir",
+    "dist:win": "electron-builder --win",
+    "dist:win:release": "electron-builder --win -p never"
+  },
+  "keywords": [
+    "audio",
+    "electron",
+    "wav",
+    "search"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^37.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.audioexplorer.browser",
+    "productName": "Audio Browser",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "index.html",
+      "main.js",
+      "styles.css",
+      "custom-tags.json",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
+  }
+}

@@ -274,6 +274,9 @@ async function copyText(text) {
 }
 
 async function openFolderWithFallback(absFolderPath) {
+  const openedByElectron = await tryOpenFolderByElectron(absFolderPath);
+  if (openedByElectron) return;
+
   const openedByBackend = await tryOpenFolderByBackend(absFolderPath);
   if (openedByBackend) return;
 
@@ -281,6 +284,17 @@ async function openFolderWithFallback(absFolderPath) {
   const opened = window.open(url, "_blank");
   if (!opened) {
     alert("打开目录失败：后端未启动或浏览器拦截。请先运行 `node server.js`，或使用“复制路径”后手动打开。");
+  }
+}
+
+async function tryOpenFolderByElectron(absFolderPath) {
+  const api = window.electronAPI;
+  if (!api || typeof api.openFolder !== "function") return false;
+  try {
+    const result = await api.openFolder(absFolderPath);
+    return result?.ok === true;
+  } catch (err) {
+    return false;
   }
 }
 

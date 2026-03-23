@@ -20,7 +20,7 @@
 - 可绑定标签 JSON 文件，实现标签变更自动保存
 - 内置音频播放与键盘快捷键（上下选择、空格播放/暂停、左右快进快退）
 - 支持复制音频绝对路径
-- 支持一键打开音频所在目录（需启动本地 Node 服务）
+- 支持一键打开音频所在目录（Electron 或本地 Node 服务）
 
 ### 项目结构
 
@@ -41,14 +41,63 @@
 ### 快速开始
 
 1. 克隆仓库并进入目录
-2. 启动本地服务
+2. 安装依赖
+
+```bash
+npm install
+```
+
+3. 启动 Web 版本（浏览器）
+
+```bash
+npm run dev:web
+```
+
+4. 浏览器访问：`http://127.0.0.1:3210`
+5. 点击「选择文件夹」，选择你的音频根目录开始使用
+
+### Electron 运行与打包（Windows）
+
+#### 本地运行 Electron
+
+```bash
+npm run start:electron
+```
+
+#### 仅打包目录（不生成安装包）
+
+```bash
+npm run pack:win
+```
+
+#### 生成安装包（NSIS）
+
+```bash
+npm run dist:win
+```
+
+打包产物默认输出到 `release/` 目录。
+
+#### 发布到 GitHub Release（自动上传 exe/zip）
+
+仓库已包含工作流：`.github/workflows/release.yml`。  
+当你 push 一个 `v*` 版本 tag（如 `v1.0.1`）时，会自动构建并把 `release/*.exe` 和 `release/*.zip` 上传到对应的 GitHub Release。
+
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+### 兼容说明
+
+- Web 模式下，「打开目录」需要本地服务可用（`npm run dev:web`）
+- Electron 模式下，「打开目录」优先通过 Electron IPC 打开系统目录，不依赖 `server.js`
+
+### 旧版最小启动方式（仅 Web）
 
 ```bash
 node server.js
 ```
-
-3. 浏览器访问：`http://127.0.0.1:3210`
-4. 点击「选择文件夹」，选择你的音频根目录开始使用
 
 ### 使用说明
 
@@ -141,7 +190,7 @@ It lets you index local `.wav` files, filter by keyword and tags, preview audio 
 - Bind a tag JSON file for auto-save on tag changes
 - Built-in audio player with keyboard shortcuts
 - Copy absolute file path
-- Open the containing folder with one click (requires local Node service)
+- Open the containing folder with one click (Electron or local Node service)
 
 ### Project Structure
 
@@ -162,14 +211,63 @@ It lets you index local `.wav` files, filter by keyword and tags, preview audio 
 ### Quick Start
 
 1. Clone this repo and enter the folder
-2. Start the local server
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Start the web mode
+
+```bash
+npm run dev:web
+```
+
+4. Open `http://127.0.0.1:3210` in your browser
+5. Click "Select Folder" and choose your audio root folder
+
+### Electron Run and Packaging (Windows)
+
+#### Run Electron locally
+
+```bash
+npm run start:electron
+```
+
+#### Package directory only (no installer)
+
+```bash
+npm run pack:win
+```
+
+#### Build installer (NSIS)
+
+```bash
+npm run dist:win
+```
+
+Build output is generated in `release/` by default.
+
+#### Publish to GitHub Release (auto upload exe/zip)
+
+This repository includes `.github/workflows/release.yml`.  
+When you push a `v*` tag (for example `v1.0.1`), GitHub Actions builds the app and uploads `release/*.exe` and `release/*.zip` to the matching GitHub Release.
+
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+### Compatibility Notes
+
+- In web mode, "Open Folder" requires local service (`npm run dev:web`)
+- In Electron mode, "Open Folder" uses Electron IPC first and does not rely on `server.js`
+
+### Legacy Minimal Start (web only)
 
 ```bash
 node server.js
 ```
-
-3. Open `http://127.0.0.1:3210` in your browser
-4. Click "Select Folder" and choose your audio root folder
 
 ### Usage
 
