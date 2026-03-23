@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>音频检索工具</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <div class="top-actions">
+        <button id="openGuideBtn" class="btn secondary mini" type="button">使用方法</button>
+        <button id="toggleSearchPanelBtn" class="btn secondary mini" type="button">收起检索区</button>
+      </div>
+
+      <section id="searchPanel" class="panel">
+        <div class="search-compact-row">
+          <div class="compact-block compact-buttons">
+            <label for="folderInput" class="btn">选择文件夹</label>
+            <input id="folderInput" type="file" webkitdirectory directory multiple />
+            <button id="clearBtn" class="btn secondary" type="button">清空索引</button>
+          </div>
+
+          <div class="compact-block compact-input-block">
+            <div class="compact-label">根路径（用于打开目录）</div>
+            <input
+              id="basePathInput"
+              class="compact-input"
+              type="text"
+              value=""
+              placeholder="例如：D:\Audio\MyLibrary"
+            />
+          </div>
+
+          <div class="compact-block compact-input-block">
+            <div class="compact-label">搜索（文件名 / 子目录）</div>
+            <input id="searchInput" class="compact-input" type="text" placeholder="输入关键字，例如: explosion, UI, footsteps" />
+          </div>
+
+          <div class="compact-block compact-buttons">
+            <button id="loadTagsBtn" class="btn secondary" type="button">导入标签 JSON</button>
+            <button id="saveTagsBtn" class="btn secondary" type="button">导出标签 JSON</button>
+            <button id="bindTagsFileBtn" class="btn secondary" type="button">绑定标签文件并自动保存</button>
+            <input id="tagsFileInput" type="file" accept=".json,application/json" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="tag-panel-header">
+            <label>所有标签（点击切换筛选，需同时满足所有已选标签）</label>
+            <button id="toggleTagPanelBtn" class="btn mini secondary" type="button">收起标签</button>
+          </div>
+          <div id="allTagsPanel" class="all-tags-panel"></div>
+        </div>
+      </section>
+
+      <section class="panel info-row-panel">
+        <div class="stats" id="hotkeyTips">快捷键：↑/↓ 切换结果，空格 播放/暂停当前选中项，← 快退1秒，→ 快进1秒</div>
+        <div class="stats" id="stats">尚未加载文件</div>
+      </section>
+
+      <section class="panel list-panel">
+        <ul id="resultList" class="result-list"></ul>
+      </section>
+    </main>
+
+    <audio id="player" controls preload="none"></audio>
+
+    <template id="itemTemplate">
+      <li class="item">
+        <div class="item-main">
+          <div class="name"></div>
+          <div class="path"></div>
+          <div class="tags-row">
+            <button class="add-tag-modal-btn" type="button">+ 标签</button>
+            <div class="tags"></div>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="btn mini play-btn" type="button">播放</button>
+          <button class="btn mini open-btn" type="button">打开目录</button>
+          <button class="btn mini copy-btn" type="button">复制路径</button>
+        </div>
+      </li>
+    </template>
+
+    <div id="tagModal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <div class="modal-head">
+          <h3>添加标签</h3>
+          <button id="closeTagModalBtn" class="btn mini secondary" type="button">关闭</button>
+        </div>
+        <div id="tagModalAudioName" class="modal-audio-name"></div>
+        <div class="field-group">
+          <label>选择已有标签（可多选）</label>
+          <div id="tagModalChoices" class="modal-tags"></div>
+        </div>
+        <div class="field-group">
+          <label for="tagModalNewInput">输入新标签（支持空格或逗号分隔多个）</label>
+          <input id="tagModalNewInput" type="text" placeholder="例如: UI Menu, Weapon, Footsteps" />
+        </div>
+        <div class="control-row">
+          <button id="confirmTagModalBtn" class="btn" type="button">确认添加</button>
+          <button id="cancelTagModalBtn" class="btn secondary" type="button">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="guideModal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-content guide-modal-content">
+        <div class="modal-head">
+          <h3>音频检索工具使用方法</h3>
+          <button id="closeGuideModalBtn" class="btn mini secondary" type="button">关闭</button>
+        </div>
+        <div class="guide-content">
+          <p><strong>检索区</strong></p>
+          <p><strong>1. 选择文件夹</strong>：点击“选择文件夹”，选择音频根目录（会递归索引子目录中的 WAV）。</p>
+          <p><strong>2. 根路径用途</strong>：填写“根路径（用于打开目录）”，用于把相对路径拼成本机绝对路径，供“打开目录”使用。</p>
+          <p><strong>3. 文本检索</strong>：在“搜索（文件名 / 子目录）”输入关键字，实时筛选音频。</p>
+          <p><strong>4. 标签筛选</strong>：在“所有标签”点击标签筛选；多标签为同时满足（AND）逻辑，再点一次可取消。</p>
+          <p><strong>5. 标签数据</strong>：可导入/导出/绑定 JSON；绑定后增删标签会自动写入 JSON。</p>
+          <p><strong>单个音频区</strong></p>
+          <p><strong>1. 播放相关</strong>：点击“播放”预览；也可用快捷键 ↑/↓ 切换条目，空格播放/暂停，←/→ 快退/快进 1 秒。</p>
+          <p><strong>2. 路径相关</strong>：点击“打开目录”跳转文件夹位置，点击“复制路径”复制当前音频绝对路径。</p>
+          <p><strong>3. 标签相关</strong>：点击“+ 标签”打开弹窗，可多选已有标签或输入新标签；自定义标签可点“×”删除。</p>
+        </div>
+        <div class="control-row guide-actions">
+          <button id="confirmGuideModalBtn" class="btn" type="button">我知道了</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
