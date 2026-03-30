@@ -1,0 +1,97 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+# Explicit large binary from Electron runtime
+node_modules/electron/dist/electron.exe
+
+# =========================
+# Build / Package outputs
+# =========================
+release/
+dist/
+out/
+build/
+
+# Electron-builder / forge / packager artifacts
+*.asar
+*.blockmap
+latest.yml
+builder-debug.yml
+
+# Installers / archives generated locally
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.AppImage
+*.zip
+*.7z
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =========================
+# Caches / temp
+# =========================
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+tmp/
+temp/
+*.tmp
+*.temp
+
+# =========================
+# Coverage / test reports
+# =========================
+coverage/
+.nyc_output/
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# IDE / Editor
+# =========================
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*~
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Runtime lock files
+# =========================
+.pid
+*.pid
+*.pid.lock
+
