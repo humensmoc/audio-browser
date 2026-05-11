@@ -26,6 +26,8 @@ const guideModal = document.getElementById("guideModal");
 const closeGuideModalBtn = document.getElementById("closeGuideModalBtn");
 const confirmGuideModalBtn = document.getElementById("confirmGuideModalBtn");
 const TAGS_STORAGE_KEY = "audio-tool-custom-tags-v1";
+const SUPPORTED_AUDIO_EXTENSIONS = [".wav", ".mp3"];
+const SUPPORTED_AUDIO_LABEL = "WAV/MP3";
 
 /** @type {{file: File, name: string, relPath: string, folderRelPath: string, hierarchyTags: string[], customTags: string[]}[]} */
 let allFiles = [];
@@ -100,8 +102,8 @@ guideModal.addEventListener("click", (evt) => {
 });
 
 function indexFiles(files) {
-  const wavFiles = files.filter((f) => /\.wav$/i.test(f.name));
-  allFiles = wavFiles.map((file) => {
+  const audioFiles = files.filter(isSupportedAudioFile);
+  allFiles = audioFiles.map((file) => {
     const relPath = (file.webkitRelativePath || file.name).replaceAll("/", "\\");
     const split = relPath.split("\\");
     split.pop();
@@ -116,6 +118,11 @@ function indexFiles(files) {
       customTags
     };
   });
+}
+
+function isSupportedAudioFile(file) {
+  const fileName = file.name.toLowerCase();
+  return SUPPORTED_AUDIO_EXTENSIONS.some((ext) => fileName.endsWith(ext));
 }
 
 function getFilteredFiles() {
@@ -144,8 +151,8 @@ function render() {
   renderSearchPanelState();
   renderAllTagsPanel();
 
-  const totalText = `已索引 ${allFiles.length} 个 WAV，当前显示 ${list.length} 个，已选标签 ${selectedFilterTags.size} 个`;
-  stats.textContent = allFiles.length ? totalText : "尚未加载 WAV 文件";
+  const totalText = `已索引 ${allFiles.length} 个 ${SUPPORTED_AUDIO_LABEL}，当前显示 ${list.length} 个，已选标签 ${selectedFilterTags.size} 个`;
+  stats.textContent = allFiles.length ? totalText : `尚未加载 ${SUPPORTED_AUDIO_LABEL} 文件`;
 
   if (!list.length) return;
   selectedIndex = clamp(selectedIndex, 0, list.length - 1);

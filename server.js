@@ -19,7 +19,8 @@ const MIME_TYPES = {
   ".gif": "image/gif",
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon",
-  ".wav": "audio/wav"
+  ".wav": "audio/wav",
+  ".mp3": "audio/mpeg"
 };
 
 function setCorsHeaders(res) {

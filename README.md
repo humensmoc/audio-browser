@@ -7,11 +7,11 @@
 ## 中文
 
 一个面向音频素材管理场景的轻量级 Web 工具。  
-你可以快速索引本地文件夹中的 `.wav` 文件，按关键字与标签筛选，边检索边试听，并支持将自定义标签导入/导出为 JSON。
+你可以快速索引本地文件夹中的 `.wav` / `.mp3` 文件，按关键字与标签筛选，边检索边试听，并支持将自定义标签导入/导出为 JSON。
 
 ### 功能特性
 
-- 递归索引所选目录下的 `.wav` 文件
+- 递归索引所选目录下的 `.wav` / `.mp3` 文件
 - 按文件名、相对路径进行实时搜索
 - 自动从目录层级提取标签（文件夹名即标签）
 - 支持为单个音频添加/删除自定义标签
@@ -103,7 +103,7 @@ node server.js
 
 #### 1) 索引与检索
 
-- 点击「选择文件夹」后，会递归读取其中的 `.wav` 文件
+- 点击「选择文件夹」后，会递归读取其中的 `.wav` / `.mp3` 文件
 - 在「搜索（文件名 / 子目录）」输入关键字可实时过滤结果
 
 #### 2) 标签系统
@@ -162,12 +162,12 @@ node server.js
 
 #### 为什么看不到文件？
 
-- 当前仅索引 `.wav` 文件
-- 请确认目录下确实包含 `.wav`，且选择的是正确根目录
+- 当前索引 `.wav` / `.mp3` 文件
+- 请确认目录下确实包含 `.wav` 或 `.mp3`，且选择的是正确根目录
 
 ### 后续可扩展方向
 
-- 支持更多音频格式（mp3/ogg/flac）
+- 支持更多音频格式（ogg/flac）
 - 增加波形预览与批量打标签
 - 支持标签重命名、合并、统计分析
 - 增加 Electron 打包，提供更完整的桌面体验
@@ -177,11 +177,11 @@ node server.js
 ## English
 
 A lightweight web tool for browsing and retrieving audio assets.  
-It lets you index local `.wav` files, filter by keyword and tags, preview audio quickly, and import/export custom tags as JSON.
+It lets you index local `.wav` / `.mp3` files, filter by keyword and tags, preview audio quickly, and import/export custom tags as JSON.
 
 ### Features
 
-- Recursively index `.wav` files from a selected folder
+- Recursively index `.wav` / `.mp3` files from a selected folder
 - Real-time search by filename and relative path
 - Auto-generated tags from folder hierarchy
 - Add/remove custom tags per audio item
@@ -273,7 +273,7 @@ node server.js
 
 #### 1) Indexing and Search
 
-- Click "Select Folder" to recursively load `.wav` files
+- Click "Select Folder" to recursively load `.wav` / `.mp3` files
 - Type keywords in search input to filter results in real time
 
 #### 2) Tag System
@@ -332,12 +332,12 @@ Fields:
 
 #### No files found
 
-- Only `.wav` files are indexed for now
+- `.wav` / `.mp3` files are indexed
 - Verify the selected folder and your file extensions
 
 ### Possible Roadmap
 
-- Support more audio formats (mp3/ogg/flac)
+- Support more audio formats (ogg/flac)
 - Waveform preview and batch tagging
 - Tag rename/merge/statistics
 - Electron packaging for desktop distribution

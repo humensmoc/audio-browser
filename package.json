@@ -1,6 +1,6 @@
 {
   "name": "audio-browser",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Audio Browser desktop app with Electron packaging",
   "main": "electron/main.cjs",
   "scripts": {
@@ -14,6 +14,7 @@
     "audio",
     "electron",
     "wav",
+    "mp3",
     "search"
   ],
   "author": "",
@@ -36,6 +37,7 @@
       "electron/**/*"
     ],
     "win": {
+      "signAndEditExecutable": false,
       "target": [
         "nsis",
         "zip"
